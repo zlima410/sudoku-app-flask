@@ -11,7 +11,9 @@ const SudokuBoard = () => {
   const fetchNewPuzzle = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:5000/new_puzzle");
-      setBoard(response.data);
+      // Transform each number in the response to a string for the input fields
+      const transformedBoard = response.data.map((row) => row.map((cell) => cell.toString()));
+      setBoard(transformedBoard);
     } catch (error) {
       console.error("Error fetching new puzzle:", error);
     }
@@ -19,8 +21,12 @@ const SudokuBoard = () => {
 
   const solveSudoku = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/solve_puzzle", board);
-      setBoard(response.data);
+      // Prepare the board for sending: transform empty strings to 0 and ensure all values are numbers
+      const preparedBoard = board.map((row) => row.map((cell) => (cell === "" ? 0 : Number(cell))));
+      const response = await axios.post("http://127.0.0.1:5000/solve_puzzle", { grid: preparedBoard });
+      // Transform each number in the solved puzzle back to a string for the input fields
+      const solvedBoard = response.data.map((row) => row.map((cell) => cell.toString()));
+      setBoard(solvedBoard);
     } catch (error) {
       console.error("Error solving puzzle:", error);
     }

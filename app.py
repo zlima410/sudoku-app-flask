@@ -1,7 +1,21 @@
 from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
 import random
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class Sudoku(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    puzzle = db.Column(db.String(81), nullable=False)
+    solution = db.Column(db.String(81), nullable=True)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 def generate_random_puzzle():
     base = 3

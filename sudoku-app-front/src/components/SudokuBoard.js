@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 
 const SudokuBoard = () => {
   const [board, setBoard] = useState(
@@ -8,13 +8,21 @@ const SudokuBoard = () => {
       .map(() => Array(9).fill(""))
   );
 
-  // Function to fetch a new puzzle from the Flask backend
   const fetchNewPuzzle = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:5000/new_puzzle");
       setBoard(response.data);
     } catch (error) {
       console.error("Error fetching new puzzle:", error);
+    }
+  };
+
+  const solveSudoku = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/solve_puzzle", board);
+      setBoard(response.data);
+    } catch (error) {
+      console.error("Error solving puzzle:", error);
     }
   };
 
@@ -26,7 +34,8 @@ const SudokuBoard = () => {
 
   return (
     <div>
-      <button onClick={fetchNewPuzzle}>New Puzzle</button> {/* New Puzzle Button */}
+      <button onClick={fetchNewPuzzle}>New Puzzle</button>
+      <button onClick={solveSudoku}>Solve Sudoku</button> {/* Solve Sudoku Button */}
       <div className="sudoku-board">
         {board.map((row, rowIndex) => (
           <div key={rowIndex} className="row">

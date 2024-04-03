@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import random
 
@@ -64,6 +64,22 @@ def new_puzzle():
     solve_sudoku(grid)
     remove_numbers_from_grid(grid, random.randint(27, 36))  # Ensure 27 to 36 cells remain filled
     return jsonify(grid)
+
+@app.route('/solve_puzzle', methods=['POST'])
+def solve_puzzle():
+    # Parse the incoming JSON data (the Sudoku grid)
+    data = request.get_json()
+
+    # The incoming data should be a 9x9 grid, but validate as needed
+    grid = data.get('grid')
+    if not grid or len(grid) != 9 or any(len(row) != 9 for row in grid):
+        return jsonify({"error": "Invalid grid"}), 400
+
+    # Attempt to solve the Sudoku puzzle
+    if solve_sudoku(grid):
+        return jsonify(grid)  # Return the solved grid
+    else:
+        return jsonify({"error": "Could not solve the puzzle"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

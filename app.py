@@ -13,9 +13,11 @@ class Sudoku(db.Model):
     puzzle = db.Column(db.String(81), nullable=False)
     solution = db.Column(db.String(81), nullable=True)
 
-@app.before_first_request
-def create_tables():
+@app.cli.command("init-db")
+def init_db_command():
+    """Clear existing data and create new tables."""
     db.create_all()
+    print("Initialized the database.")
 
 def generate_random_puzzle():
     base = 3
@@ -49,15 +51,18 @@ def generate_puzzle():
     # Convert the puzzle to a string for easy display or storage
     puzzle_str = ''.join([''.join(str(num) for num in row) for row in puzzle])
 
-    # In a real app, you might save the puzzle to a database here
-    # For demonstration purposes, we'll skip database operations
+    # Create a new Sudoku instance with the generated puzzle
+    new_puzzle = Sudoku(puzzle=puzzle_str, solution=None)  # Assuming solution is not generated at this point
+
+    # Save the puzzle to the database
+    db.session.add(new_puzzle)
+    db.session.commit()
 
     return jsonify({
         'status': 'success',
         'message': 'Puzzle generated successfully',
         'puzzle': puzzle_str,
-        # If saving to a database, you would retrieve an ID
-        # 'id': puzzle_id 
+        'id': new_puzzle.id  # Return the ID of the newly created puzzle
     })
 
 if __name__ == '__main__':

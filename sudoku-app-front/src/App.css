@@ -36,7 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-.sudoku-board {
-    border: black relative 1px;
-}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./SudokuBoard.css";
 
 const SudokuBoard = () => {
   const [board, setBoard] = useState(
@@ -40,23 +41,30 @@ const SudokuBoard = () => {
 
   return (
     <div>
-      <button onClick={fetchNewPuzzle}>New Puzzle</button>
-      <button onClick={solveSudoku}>Solve Sudoku</button> {/* Solve Sudoku Button */}
-      <div className="sudoku-board">
-        {board.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <input
-                key={`${rowIndex}-${colIndex}`}
-                type="text"
-                maxLength="1"
-                value={cell}
-                onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+        <div className="sudoku-board-container">
+            <div className="sudoku-board">
+                {board.map((row, rowIndex) => (
+                <div key={rowIndex} className="sudoku-row">
+                    {row.map((cell, colIndex) => (
+                        <div className="cell-container" key={`${rowIndex}-${colIndex}`}>
+                            <input
+                                type="text"
+                                maxLength="1"
+                                value={cell}
+                                onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
+                            />
+                        </div>
+                    ))}
+                </div>
+                ))}
+            </div>
+        </div>
+        <div className="sudoku-buttons-container">
+            <div className="sudoku-buttons">
+                <button onClick={fetchNewPuzzle}>New Puzzle</button>
+                <button onClick={solveSudoku}>Solve Sudoku</button>
+            </div>
+        </div>
     </div>
   );
 };

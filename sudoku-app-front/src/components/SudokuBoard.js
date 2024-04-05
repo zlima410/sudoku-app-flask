@@ -44,18 +44,18 @@ const SudokuBoard = () => {
         <div className="sudoku-board-container">
             <div className="sudoku-board">
                 {board.map((row, rowIndex) => (
-                <div key={rowIndex} className="sudoku-row">
-                    {row.map((cell, colIndex) => (
-                        <div className="cell-container" key={`${rowIndex}-${colIndex}`}>
-                            <input
-                                type="text"
-                                maxLength="1"
-                                value={cell}
-                                onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
-                            />
-                        </div>
-                    ))}
-                </div>
+                    <div key={rowIndex} className={`sudoku-row ${[2, 5, 8].includes(rowIndex) ? 'thick-bottom-border' : ''}`}>
+                        {row.map((cell, colIndex) => (
+                            <div className={`cell-container ${[2, 5, 8].includes(colIndex) ? 'thick-right-border' : ''} ${[2, 5, 8].includes(rowIndex) && [2, 5, 8].includes(colIndex) ? 'thick-right-bottom-border' : ''}`} key={`${rowIndex}-${colIndex}`}>
+                                <input
+                                    type="text"
+                                    maxLength="1"
+                                    value={cell}
+                                    onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 ))}
             </div>
         </div>

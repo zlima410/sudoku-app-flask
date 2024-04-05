@@ -8,7 +8,7 @@
 .sudoku-board {
   background-color: #782F40;
   padding: 5px;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 .sudoku-row {

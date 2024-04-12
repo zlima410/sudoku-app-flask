@@ -1,4 +1,4 @@
- .sudoku-board-container {
+.sudoku-board-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -37,7 +37,6 @@
   border: 1px solid #782F40;
 }
 
-/* Button styling */
 button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -54,4 +53,3 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-

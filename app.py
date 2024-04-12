@@ -60,13 +60,22 @@ def remove_numbers_from_grid(grid, cells_to_remain):
 def convert_zeros_to_blanks(grid):
     return [["" if cell == 0 else cell for cell in row] for row in grid]
 
+def grid_to_blocks(grid):
+    blocks = [[] for _ in range(9)]
+    for row in range(9):
+        for col in range(9):
+            block_index = (row // 3) * 3  + (col // 3)
+            blocks[block_index].append(grid[row][col])
+    return blocks
+
 @app.route('/new_puzzle', methods=['GET'])
 def new_puzzle():
     grid = [[0 for _ in range(9)] for _ in range(9)]
     fill_diagonal_boxes(grid)
     solve_sudoku(grid)
     remove_numbers_from_grid(grid, random.randint(27, 36))  # Ensure 27 to 36 cells remain filled
-    return jsonify(convert_zeros_to_blanks(grid))
+    blocks = grid_to_blocks(grid)
+    return jsonify({"grid": convert_zeros_to_blanks(grid), "blocks": convert_zeros_to_blanks(blocks)})
 
 @app.route('/solve_puzzle', methods=['POST'])
 def solve_puzzle():
@@ -82,7 +91,8 @@ def solve_puzzle():
 
     # Attempt to solve the Sudoku puzzle
     if solve_sudoku(grid):
-        return jsonify(convert_zeros_to_blanks(grid))  # Return the solved grid
+        blocks = grid_to_blocks(grid)
+        return jsonify({"grid": convert_zeros_to_blanks(grid), "blocks":convert_zeros_to_blanks(blocks)})  # Return the solved grid
     else:
         return jsonify({"error": "Could not solve the puzzle"}), 500
 

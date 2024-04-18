@@ -2,28 +2,29 @@ import React from 'react';
 import Cell from './Cell';
 
 function SudokuGrid({ puzzle, setPuzzle }) {
-  const handleChange = (value, row, col) => {
-    const newPuzzle = puzzle.map((r, i) =>
-      i === row ? r.map((c, j) => j === col ? value : c) : r
-    );
-    setPuzzle(newPuzzle);
-  };
+    const updatePuzzle = (newValue, row, col) => {
+        const newPuzzle = [...puzzle];
+        newPuzzle[row][col] = newValue;  // Update confirmed value
+        setPuzzle(newPuzzle);
+    };
 
-  return (
-    <div className="grid">
-      {puzzle.map((row, rowIndex) =>
-        row.map((value, colIndex) => (
-          <Cell
-            key={`${rowIndex}-${colIndex}`}
-            value={value}
-            onChange={(value) => handleChange(value, rowIndex, colIndex)}
-            isBlockBorder={(rowIndex % 3 === 2) && (rowIndex !== 8) && (colIndex % 3 === 2) && (colIndex !== 8)}
-          />
-        ))
-      )}
-    </div>
-  );
+    return (
+        <div className="grid">
+            {puzzle.map((row, rowIndex) =>
+                row.map((value, colIndex) => (
+                    <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        initialValue={value}
+                        updatePuzzle={updatePuzzle}
+                        rowIndex={rowIndex}
+                        colIndex={colIndex}
+                    />
+                ))
+            )}
+        </div>
+    );
 }
 
 export default SudokuGrid;
+
 

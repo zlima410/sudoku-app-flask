@@ -46,9 +46,15 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Sudoku Game</h1>
-      <SudokuGrid puzzle={solution} setPuzzle={setSolution} />
-      <Controls onSolve={handleSolve} onReset={handleReset} />
+      <div className="sudoku-header">
+        <h1>Sudoku Game</h1>
+      </div>
+      <div className="sudoku-game-wrapper">
+        <SudokuGrid puzzle={solution} setPuzzle={setSolution} />
+        <div className="sudoku-controls-wrapper">
+            <Controls onSolve={handleSolve} onReset={handleReset} />
+        </div>
+      </div>
     </div>
   );
 }

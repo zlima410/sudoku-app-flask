@@ -12,7 +12,7 @@ function App() {
   }, []);
 
   const fetchNewPuzzle = () => {
-    fetch('http://localhost:5000/new_puzzle')
+    fetch('http://127.0.0.1:5000/new_puzzle')
       .then(response => response.json())
       .then(data => {
         setPuzzle(data.grid);
@@ -26,7 +26,7 @@ function App() {
   };
 
   const handleSolve = () => {
-    fetch('http://localhost:5000/solve_puzzle', {
+    fetch('http://127.0.0.1:5000/solve_puzzle', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
